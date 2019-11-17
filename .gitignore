@@ -1,13 +1,8 @@
+# SPDX-FileCopyrightText: ©  Basil Peace
+# SPDX-License-Identifier: Apache-2.0
 /build/
-# Gradle
-.gradle/
-gradle.properties
-# Eclipse
-.settings/
-# GFM Viewer
-.*.md.html
-# Packer
-packer_cache/
-*.pem
-# Rubocop
-.rubocop_todo.yml
+# IDEA
+/.idea/$PRODUCT_WORKSPACE_FILE$
+/.idea/dbnavigator.xml
+# NPM
+/node_modules/

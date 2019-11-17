@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+SPDX-FileCopyrightText: ©  Basil Peace
+SPDX-License-Identifier: Apache-2.0
+-->
 <projectDescription>
-	<name>infrastructure</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>
-		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
-	</natures>
+	<name>fidata.org</name>
+	<comment/>
+	<projects/>
+	<buildSpec/>
+	<natures/>
 </projectDescription>

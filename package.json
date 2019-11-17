@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "graph-data-structure": "^1.9.0",
+    "jjo": "1.0.3"
+  }
+}

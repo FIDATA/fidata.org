@@ -1,7 +1,0 @@
-{
-    "codenarc": {
-        "org.codenarc:CodeNarc": {
-            "locked": "0.25.2"
-        }
-    }
-}

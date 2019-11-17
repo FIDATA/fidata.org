@@ -1,8 +1,0 @@
-*.bat text eol=crlf
-*.bat.erb text eol=crlf
-*.cmd text eol=crlf
-*.cmd.erb text eol=crlf
-*.ps1 text eol=crlf
-*.ps1.erb text eol=crlf
-*.sh text eol=lf
-*.sh.erb text eol=lf
