@@ -491,6 +491,7 @@ resource "cloudflare_record" "mail_subdomain" {
   name = "mail"
   type = "CNAME"
   value = "domain.mail.yandex.net"
+  proxied = false
 }
 
 resource "cloudflare_record" "yandex_mail_dkim" {
