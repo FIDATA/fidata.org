@@ -104,6 +104,26 @@ output "fidata_subnet_id" {
   value = aws_subnet.fidata.id
 }
 
+resource "aws_subnet" "fidata_1b" {
+  vpc_id = aws_vpc.fidata.id
+  availability_zone = "eu-west-1b"
+  cidr_block = "172.31.16.0/20"
+  map_public_ip_on_launch = true
+  tags = {
+    Name = "FIDATA 1B"
+  }
+}
+
+resource "aws_subnet" "fidata_1a" {
+  vpc_id = aws_vpc.fidata.id
+  availability_zone = "eu-west-1a"
+  cidr_block = "172.31.32.0/20"
+  map_public_ip_on_launch = true
+  tags = {
+    Name = "FIDATA 1A"
+  }
+}
+
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.fidata.id
 }
@@ -158,6 +178,18 @@ resource "aws_main_route_table_association" "a" {
 resource "aws_route_table_association" "a" {
   subnet_id = aws_subnet.fidata.id
   route_table_id = aws_route_table.r.id
+}
+
+resource "aws_db_subnet_group" "fidata" {
+  name       = "fidata"
+  subnet_ids = [
+    aws_subnet.fidata.id,
+    aws_subnet.fidata_1b.id,
+    aws_subnet.fidata_1a.id,
+  ]
+}
+output "fidata_db_subnet_group_name" {
+  value = aws_db_subnet_group.fidata.name
 }
 
 # Security Groups
