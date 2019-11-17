@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: ©  Basil Peace
-// SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: ©  Basil Peace
+# SPDX-License-Identifier: Apache-2.0
 terraform {
   required_version = "~> 0.12"
   backend "artifactory" {
