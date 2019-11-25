@@ -26,57 +26,6 @@ provider "external" {
 
 # IAMs
 
-resource "aws_iam_user" "fidata_jenkins" {
-  name = "fidata-jenkins"
-}
-resource "aws_iam_access_key" "fidata_jenkins" {
-  user = aws_iam_user.fidata_jenkins.name
-}
-resource "aws_iam_user_policy" "fidata_jenkins" {
-  name = "fidata-jenkins"
-  user = aws_iam_user.fidata_jenkins.name
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1312295543082",
-      "Action": [
-        "ec2:DescribeSpotInstanceRequests",
-        "ec2:CancelSpotInstanceRequests",
-        "ec2:GetConsoleOutput",
-        "ec2:RequestSpotInstances",
-        "ec2:RunInstances",
-        "ec2:StartInstances",
-        "ec2:StopInstances",
-        "ec2:TerminateInstances",
-        "ec2:CreateTags",
-        "ec2:DeleteTags",
-        "ec2:DescribeInstances",
-        "ec2:DescribeKeyPairs",
-        "ec2:DescribeRegions",
-        "ec2:DescribeImages",
-        "ec2:DescribeAvailabilityZones",
-        "ec2:DescribeSecurityGroups",
-        "ec2:DescribeSubnets",
-        "ec2:CreateKeyPair",
-        "ec2:ImportKeyPair"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-output "fidata_jenkins_iam_access_key" {
-  value = aws_iam_access_key.fidata_jenkins.id
-}
-output "fidata_jenkins_iam_secret_key" {
-  value = aws_iam_access_key.fidata_jenkins.secret
-  sensitive = true
-}
-
 # VPC
 
 resource "aws_vpc" "fidata" {
@@ -417,21 +366,6 @@ resource "aws_key_pair" "fidata_main" {
 }
 output "fidata_main_key_name" {
   value = aws_key_pair.fidata_main.key_name
-}
-
-data "external" "fidata_jenkins_ssh_key" {
-  program = [
-    "npx",
-    "jjo",
-    "contents=@../build/keys/fidata-jenkins.pub"
-  ]
-}
-resource "aws_key_pair" "fidata_jenkins" {
-  key_name = "fidata-jenkins"
-  public_key = data.external.fidata_jenkins_ssh_key.result.contents
-}
-output "fidata_jenkins_key_name" {
-  value = aws_key_pair.fidata_jenkins.key_name
 }
 
 data "external" "kitchen_ssh_key" {
