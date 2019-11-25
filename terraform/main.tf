@@ -26,6 +26,67 @@ provider "external" {
 
 # IAMs
 
+data "aws_iam_policy_document" "elastic_beanstalk_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["elasticbeanstalk.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "elastic_beanstalk_service" {
+  name = "elastic_beanstalk_service"
+  assume_role_policy = data.aws_iam_policy_document.elastic_beanstalk_assume_role.json
+}
+
+data "aws_iam_policy" "AWSElasticBeanstalkService" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkService"
+}
+
+resource "aws_iam_role_policy_attachment" "elastic_beanstalk_service" {
+  role = aws_iam_role.elastic_beanstalk_service.name
+  policy_arn = data.aws_iam_policy.AWSElasticBeanstalkService.arn
+}
+
+output "elastic_beanstalk_service_role_arn" {
+  value = aws_iam_role.elastic_beanstalk_service.arn
+}
+
+data "aws_iam_policy_document" "ec2_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "elastic_beanstalk_web_server" {
+  name = "elastic_beanstalk_web_server"
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+}
+
+data "aws_iam_policy" "AWSElasticBeanstalkWebTier" {
+  arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
+
+resource "aws_iam_role_policy_attachment" "elastic_beanstalk_web_server" {
+  role = aws_iam_role.elastic_beanstalk_web_server.name
+  policy_arn = data.aws_iam_policy.AWSElasticBeanstalkWebTier.arn
+}
+
+resource "aws_iam_instance_profile" "elastic_beanstalk_web_server" {
+  name = "elastic_beanstalk_web_server"
+  role = aws_iam_role.elastic_beanstalk_web_server.name
+}
+
+output "elastic_beanstalk_web_server_instance_profile_name" {
+  value = aws_iam_instance_profile.elastic_beanstalk_web_server.name
+}
+
 # VPC
 
 resource "aws_vpc" "fidata" {
