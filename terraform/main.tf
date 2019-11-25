@@ -411,6 +411,9 @@ resource "aws_key_pair" "fidata_main" {
   key_name = "fidata-main"
   public_key = data.external.fidata_main_ssh_key.result.contents
 }
+output "fidata_main_key_name" {
+  value = aws_key_pair.fidata_main.key_name
+}
 
 data "external" "fidata_jenkins_ssh_key" {
   program = [
@@ -423,6 +426,9 @@ resource "aws_key_pair" "fidata_jenkins" {
   key_name = "fidata-jenkins"
   public_key = data.external.fidata_jenkins_ssh_key.result.contents
 }
+output "fidata_jenkins_key_name" {
+  value = aws_key_pair.fidata_jenkins.key_name
+}
 
 data "external" "kitchen_ssh_key" {
   program = [
@@ -434,6 +440,9 @@ data "external" "kitchen_ssh_key" {
 resource "aws_key_pair" "kitchen" {
   key_name = "kitchen"
   public_key = data.external.kitchen_ssh_key.result.contents
+}
+output "kitchen_key_name" {
+  value = aws_key_pair.kitchen.key_name
 }
 
 # DNS
