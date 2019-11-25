@@ -6,3 +6,5 @@
 /.idea/dbnavigator.xml
 # NPM
 /node_modules/
+
+setvars.cmd
