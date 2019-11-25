@@ -141,7 +141,11 @@ resource "aws_vpc_dhcp_options_association" "dns_resolver" {
 
 resource "aws_default_network_acl" "fidata" {
   default_network_acl_id = aws_vpc.fidata.default_network_acl_id
-  subnet_ids = [aws_subnet.fidata.id]
+  subnet_ids = [
+    aws_subnet.fidata.id,
+    aws_subnet.fidata_1b.id,
+    aws_subnet.fidata_1a.id,
+  ]
   egress {
     rule_no = 100
     from_port = 0
