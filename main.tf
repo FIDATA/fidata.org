@@ -418,7 +418,7 @@ data "external" "fidata_main_ssh_key" {
   program = [
     "npx",
     "jjo",
-    "contents=@../build/keys/fidata-main.pub"
+    "contents=@build/keys/fidata-main.pub"
   ]
 }
 resource "aws_key_pair" "fidata_main" {
@@ -433,7 +433,7 @@ data "external" "kitchen_ssh_key" {
   program = [
     "npx",
     "jjo",
-    "contents=@../build/keys/kitchen.pub"
+    "contents=@build/keys/kitchen.pub"
   ]
 }
 resource "aws_key_pair" "kitchen" {
