@@ -9,6 +9,15 @@ terraform {
   }
 }
 
+# Variables
+
+variable "db_admin_username" {
+  type = string
+}
+variable "db_admin_password" {
+  type = string
+}
+
 # Providers
 
 provider "aws" {
@@ -291,29 +300,6 @@ output "NFS_private_security_group_id" {
 resource "aws_security_group" "MySQL_private" {
   name = "MySQL_private"
   vpc_id = aws_vpc.fidata.id
-  ingress {
-    protocol = "tcp"
-    from_port = 3306
-    to_port = 3306
-    cidr_blocks = [aws_vpc.fidata.cidr_block]
-  }
-}
-output "MySQL_private_security_group_id" {
-  value = aws_security_group.MySQL_private.id
-}
-
-resource "aws_security_group" "PostgreSQL_private" {
-  name = "PostgreSQL_private"
-  vpc_id = aws_vpc.fidata.id
-  ingress {
-    protocol = "tcp"
-    from_port = 5432
-    to_port = 5432
-    cidr_blocks = [aws_vpc.fidata.cidr_block]
-  }
-}
-output "PostgreSQL_private_security_group_id" {
-  value = aws_security_group.PostgreSQL_private.id
 }
 
 resource "aws_security_group" "SSH_private" {
@@ -462,6 +448,62 @@ resource "aws_key_pair" "kitchen" {
 }
 output "kitchen_key_name" {
   value = aws_key_pair.kitchen.key_name
+}
+
+resource "aws_db_parameter_group" "mysql5_7" {
+  name   = "mysql5-7"
+  family = "mysql5.7"
+
+  parameter {
+    name  = "character_set_server"
+    value = "utf8"
+  }
+
+  parameter {
+    name  = "skip_name_resolve"
+    value = "1"
+    apply_method = "pending-reboot"
+  }
+}
+
+resource "aws_db_instance" "MySQL" {
+  storage_type         = "gp2"
+  allocated_storage    = 20
+  engine               = "mysql"
+  engine_version       = "5.7.26"
+  instance_class       = "db.t3.micro"
+  username             = var.db_admin_username
+  password             = var.db_admin_password
+  parameter_group_name = aws_db_parameter_group.mysql5_7.name
+  port = 3306
+  db_subnet_group_name = aws_db_subnet_group.fidata.name
+  vpc_security_group_ids = [
+    aws_default_security_group.default.id,
+    aws_security_group.ICMP_private.id,
+    aws_security_group.MySQL_private.id,
+    aws_default_security_group.default.id,
+  ]
+  multi_az = false
+  maintenance_window = "Sat:01:00-Sat:03:00"
+  skip_final_snapshot = true # TODO
+}
+
+resource "aws_security_group_rule" "MySQL_private" {
+  security_group_id = aws_security_group.MySQL_private.id
+  type = "ingress"
+  protocol = "tcp"
+  from_port = aws_db_instance.MySQL.port
+  to_port = aws_db_instance.MySQL.port
+  cidr_blocks = [aws_vpc.fidata.cidr_block]
+}
+output "MySQL_engine" {
+  value = aws_db_instance.MySQL.engine
+}
+output "MySQL_address" {
+  value = aws_db_instance.MySQL.address
+}
+output "MySQL_port" {
+  value = aws_db_instance.MySQL.port
 }
 
 # DNS
