@@ -124,6 +124,9 @@ resource "aws_subnet" "fidata_1b" {
     Name = "FIDATA 1B"
   }
 }
+output "fidata_1b_subnet_id" {
+  value = aws_subnet.fidata_1b.id
+}
 
 resource "aws_subnet" "fidata_1a" {
   vpc_id = aws_vpc.fidata.id
@@ -133,6 +136,9 @@ resource "aws_subnet" "fidata_1a" {
   tags = {
     Name = "FIDATA 1A"
   }
+}
+output "fidata_1a_subnet_id" {
+  value = aws_subnet.fidata_1a.id
 }
 
 resource "aws_internet_gateway" "gw" {
