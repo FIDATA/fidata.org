@@ -10,5 +10,3 @@
 !/.terraform/plugins/*/lock.json
 # NPM
 /node_modules/
-
-setvars.cmd
