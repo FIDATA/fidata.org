@@ -288,6 +288,20 @@ output "NFS_private_security_group_id" {
   value = aws_security_group.NFS_private.id
 }
 
+resource "aws_security_group" "MySQL_private" {
+  name = "MySQL_private"
+  vpc_id = aws_vpc.fidata.id
+  ingress {
+    protocol = "tcp"
+    from_port = 3306
+    to_port = 3306
+    cidr_blocks = [aws_vpc.fidata.cidr_block]
+  }
+}
+output "MySQL_private_security_group_id" {
+  value = aws_security_group.MySQL_private.id
+}
+
 resource "aws_security_group" "PostgreSQL_private" {
   name = "PostgreSQL_private"
   vpc_id = aws_vpc.fidata.id
