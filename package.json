@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "jjo": "1.0.3"
+  "devDependencies": {
+    "jjo": "^1.2.1"
   }
 }
