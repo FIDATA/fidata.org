@@ -487,6 +487,9 @@ resource "aws_db_instance" "MySQL" {
   maintenance_window = "Sat:01:00-Sat:03:00"
   skip_final_snapshot = true # TODO
 }
+output "MySQL_db_instance_id" {
+  value = aws_db_instance.MySQL.id
+}
 
 resource "aws_security_group_rule" "MySQL_private" {
   security_group_id = aws_security_group.MySQL_private.id
@@ -495,15 +498,6 @@ resource "aws_security_group_rule" "MySQL_private" {
   from_port = aws_db_instance.MySQL.port
   to_port = aws_db_instance.MySQL.port
   cidr_blocks = [aws_vpc.fidata.cidr_block]
-}
-output "MySQL_engine" {
-  value = aws_db_instance.MySQL.engine
-}
-output "MySQL_address" {
-  value = aws_db_instance.MySQL.address
-}
-output "MySQL_port" {
-  value = aws_db_instance.MySQL.port
 }
 
 # DNS
