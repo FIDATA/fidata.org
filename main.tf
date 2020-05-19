@@ -358,20 +358,6 @@ output "WinRM_security_group_id" {
   value = aws_security_group.WinRM.id
 }
 
-resource "aws_security_group" "JNLP_private" {
-  name = "JNLP_private"
-  vpc_id = aws_vpc.fidata.id
-  ingress {
-    protocol = "tcp"
-    from_port = 49817
-    to_port = 49817
-    cidr_blocks = [aws_vpc.fidata.cidr_block]
-  }
-}
-output "JNLP_private_security_group_id" {
-  value = aws_security_group.JNLP_private.id
-}
-
 resource "aws_security_group" "RDP" {
   name = "RDP"
   vpc_id = aws_vpc.fidata.id
