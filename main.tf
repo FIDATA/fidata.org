@@ -421,6 +421,21 @@ output "fidata_main_key_name" {
   value = aws_key_pair.fidata_main.key_name
 }
 
+data "external" "fidata_chef_ssh_key" {
+  program = [
+    "npx",
+    "jjo",
+    "contents=@build/keys/fidata-chef.pub"
+  ]
+}
+resource "aws_key_pair" "fidata_chef" {
+  key_name = "fidata-chef"
+  public_key = data.external.fidata_chef_ssh_key.result.contents
+}
+output "fidata_chef_key_name" {
+  value = aws_key_pair.fidata_chef.key_name
+}
+
 data "external" "kitchen_ssh_key" {
   program = [
     "npx",
